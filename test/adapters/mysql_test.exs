@@ -36,6 +36,10 @@ defmodule ExQ.Adapters.MySQLTest do
     assert %M{} = M.first
   end
 
+  test "count" do
+    assert 1 >= M.where("id = 125") |> Q.count
+  end
+
   test "update" do
     assert %M{string: "HEHE"} = %{M.first | string: "HEHE"} |> MySQL.update
   end
@@ -47,4 +51,5 @@ defmodule ExQ.Adapters.MySQLTest do
   test "delete query" do
     assert [:ok] == M.limit(1) |> MySQL.delete
   end
+
 end

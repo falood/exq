@@ -9,7 +9,7 @@ defmodule ExQ.Adapters.MySQL do
         user:     opts |> Keyword.get(:username, "root") |> to_char_list,
         password: opts |> Keyword.get(:password, "") |> to_char_list,
         database: opts |> Keyword.fetch!(:database) |> to_char_list,
-        size:     opts |> Keyword.get(:pool_size, 5),
+        size:     opts |> Keyword.get(:size, 5),
         encoding: opts |> Keyword.get(:encoding, :utf8)
       ]
     )
@@ -63,7 +63,7 @@ defmodule ExQ.Adapters.MySQL do
       end,
       if is_nil q.offset do "" else " OFFSET #{q.offset}" end,
       if is_nil q.limit  do "" else " LIMIT #{q.limit}" end
-    ] |> Enum.join ""
+    ] |> Enum.join("")
   end
 
 
@@ -75,6 +75,11 @@ defmodule ExQ.Adapters.MySQL do
     end
   end
 
+
+  def select(%Q{count: true}=q) do
+    [["": count]] = select(q.repo[:pool], q |> parse_query)
+    count
+  end
 
   def select(q) do
     for opts <- select(q.repo[:pool], q |> parse_query) do

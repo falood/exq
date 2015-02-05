@@ -1,3 +1,9 @@
+defmodule Mix.Tasks.Compile.Q do
+  def run(_) do
+    Application.ensure_all_started :exq
+  end
+end
+
 defmodule ExQ.Mixfile do
   use Mix.Project
 
@@ -5,6 +11,7 @@ defmodule ExQ.Mixfile do
     [ app: :exq,
       version: "0.0.1",
       elixir: "~> 1.0.0",
+      compilers: [ :elixir, :app, :q ],
       deps: deps
     ]
   end

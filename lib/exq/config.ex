@@ -1,7 +1,7 @@
 defmodule ExQ.Config do
   {default_repo, repos} =
     Application.get_all_env(:exq)
- |> Dict.split([:adapter, :host, :port, :database, :username, :password])
+ |> Dict.split([:adapter, :host, :port, :database, :username, :password, :size])
 
   @repos [{:exq_default_repo, default_repo} | repos] |> Enum.filter_map(
     fn {_, repo}    -> repo[:adapter] in [:mysql, :postgres] end,
